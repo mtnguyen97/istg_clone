@@ -1,0 +1,64 @@
+package com.example.istg.services;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.istg.commons.User;
+import com.example.istg.repos.UserRepository;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	private @Autowired UserRepository repo;
+
+	@Override
+	public User findByUsernameAndPassword(String username, String password) {
+		return repo.findByUsernameAndPassword(username, password);
+	}
+
+	@Override
+	public List<User> getAllUsers() {
+		return repo.findAll().stream().map((u) -> {
+			// TODO hide users password
+			u.setPassword("");
+			return u;
+		}).collect(Collectors.toList());
+	}
+
+	@Override
+	public User getUser(Long id) {
+		User u = repo.findById(id).orElseThrow();
+		// TODO hide user password
+		u.setPassword("");
+		return u;
+	}
+
+	@Override
+	public User createUser(User u) {
+		u = repo.save(u);
+		return u;
+	}
+
+	@Override
+	public User updateUser(User u) {
+		if (repo.existsById(u.getId())) {
+			u = repo.save(u);
+			return u;
+		}
+		throw new NoSuchElementException();
+	}
+
+	@Override
+	public void deleteUser(Long id) {
+		if (!repo.existsById(id)) {
+			throw new NoSuchElementException();
+		}
+		repo.deleteById(id);
+	}
+
+}

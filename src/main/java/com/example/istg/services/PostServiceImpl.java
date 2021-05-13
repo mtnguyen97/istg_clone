@@ -1,0 +1,52 @@
+package com.example.istg.services;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.istg.commons.Post;
+import com.example.istg.repos.PostRepository;
+
+@Service
+public class PostServiceImpl implements PostService {
+
+	@Autowired
+	private PostRepository repo;
+
+	@Override
+	public List<Post> getAllPosts() {
+		return repo.findAll();
+	}
+
+	@Override
+	public Post getPost(Long id) {
+		return repo.findById(id).orElseThrow();
+	}
+
+	@Override
+	public Post createPost(Post p) {
+		p = repo.save(p);
+		return p;
+	}
+
+	@Override
+	public Post updatePost(Post p) {
+		if (repo.existsById(p.getId())) {
+			p = repo.save(p);
+			return p;
+		}
+		throw new NoSuchElementException();
+	}
+
+	@Override
+	public void deletePost(Long id) {
+		if (repo.existsById(id)) {
+			repo.deleteById(id);
+			return;
+		}
+		throw new NoSuchElementException();
+	}
+
+}
