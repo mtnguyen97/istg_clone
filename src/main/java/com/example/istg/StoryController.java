@@ -1,11 +1,13 @@
 package com.example.istg;
 
-import java.util.ArrayList;
+import static org.springframework.http.ResponseEntity.notFound;
+import static org.springframework.http.ResponseEntity.ok;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,65 +18,58 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.istg.commons.Story;
-import com.example.istg.repos.StoryRepository;
+import com.example.istg.services.StoryService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/story")
 public class StoryController {
 
 	@Autowired
-	private StoryRepository storyRepository;
+	private StoryService service;
 
 	// get all
-	@GetMapping("/stories")
-	public ArrayList<Story> getAllStory(Model model) {
-
-		return (ArrayList<Story>) storyRepository.findAll();
+	@GetMapping("/all")
+	public List<Story> getAllStories() {
+		return service.getAllStories();
 	}
 
 	// get by id
-	@GetMapping("story/{id}")
-	public Story getStory(@PathVariable Long id) {
-		return storyRepository.findById(id).get();
+	@GetMapping("/id/{id}")
+	public ResponseEntity<Story> getStory(@PathVariable Long id) {
+		try {
+			Story s = service.getStory(id);
+			return ok(s);
+		} catch (NoSuchElementException e) {
+			return notFound().build();
+		}
 	}
 
 	// create new story
 	@PostMapping("/story/create")
 	public Story createStory(@RequestBody Story story) {
-		return storyRepository.save(story);
+		story = service.createStory(story);
+		return story;
 	}
 
 	// update story
-	@PutMapping("/story/update/{id}")
-	public ResponseEntity<Story> updateStory(@PathVariable Long id, @RequestBody Story storyDetail) {
-
-		Story story = storyRepository.findById(id).get();
-		if (story != null) {
-			story.setDeletedAt(storyDetail.getDeletedAt());
-			story.setImage(storyDetail.getImage());
-			story.setPostedBy(storyDetail.getPostedBy());
-			story.setPublicStory(storyDetail.isPublicStory());
-		
-
-			final Story updateStory = storyRepository.save(story);
-			return ResponseEntity.ok(updateStory);
+	@PutMapping("/update")
+	public ResponseEntity<Story> updateStory(@RequestBody Story story) {
+		try {
+			story = service.updateStory(story);
+			return ok(story);
+		} catch (NoSuchElementException e) {
+			return notFound().build();
 		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
 	}
 
 	// delete story
-	@RequestMapping(value = "story/delete/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Long> deleteStory(@PathVariable Long id) {
-
-		Story story = storyRepository.findById(id).get();
-
-		if (story != null) {
-			storyRepository.delete(story);
-			return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			service.deleteStory(id);
+			return ok(id);
+		} catch (NoSuchElementException e) {
+			return notFound().build();
 		}
-
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
 	}
 }
