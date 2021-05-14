@@ -1,21 +1,23 @@
 package com.example.istg;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.example.istg.commons.User;
-import com.example.istg.services.UserService;
 
 @Component
 public class CustomAuthProvider implements AuthenticationProvider {
 
-	@Autowired
-	private UserService userService;
+//	@Autowired
+//	private UserService userService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -25,11 +27,17 @@ public class CustomAuthProvider implements AuthenticationProvider {
 		if (cre != null) {
 			password = cre.toString();
 		}
-		User u = userService.findByUsernameAndPassword(username, password);
-		if (u == null) {
-			throw new AuthenticationCredentialsNotFoundException(username);
+//		User u = userService.findByUsernameAndPassword(username, password); 
+		User u = new User();
+		// TODO test
+		u.setUsername("mathen");
+		u.setPassword("12345678");
+		if (!u.getUsername().equals(username) || !u.getPassword().equals(password)) {
+			return null;
 		}
-		return new UsernamePasswordAuthenticationToken(username, password);
+		Collection<? extends GrantedAuthority> authorities = Collections
+				.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+		return new UsernamePasswordAuthenticationToken(username, password, authorities);
 	}
 
 	@Override

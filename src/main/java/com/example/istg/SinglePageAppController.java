@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class SinglePageAppController {
 	
-	@RequestMapping(method = RequestMethod.GET, value = {"explore", "message"})
+	@RequestMapping(method = RequestMethod.GET, value = {"explore", "message", "auth"})
 	public String dispatchView() {
 		return "index";
 	}
