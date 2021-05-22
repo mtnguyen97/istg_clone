@@ -18,7 +18,7 @@ public class IstgApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/api");
+				registry.addMapping("/api/**").allowedOrigins();
 			}
 		};
 	}
