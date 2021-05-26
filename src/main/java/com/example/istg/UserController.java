@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +34,24 @@ public class UserController {
 
 		return service.getAllUsers();
 	}
+
+	@GetMapping("/current")
+	public ResponseEntity<User> getCurrentUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		String name = authentication.getName();
+		if (name == "anonymousUser") {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		User user = service.getUserByUsername(name);
+		if (user == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(user);
+	}
+
 
 	// get by id
 	@GetMapping("/id/{id}")

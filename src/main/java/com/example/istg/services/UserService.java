@@ -15,7 +15,11 @@ public interface UserService {
 	User createUser(User u);
 
 	User updateUser(User u);
-	
+
 	void deleteUser(Long id);
+
+	User getUserByUsername(String username);
+
+	boolean isEmailExisted(String email);
 
 }

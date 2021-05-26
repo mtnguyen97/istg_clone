@@ -61,4 +61,16 @@ public class UserServiceImpl implements UserService {
 		repo.deleteById(id);
 	}
 
+	@Override
+	public User getUserByUsername(String username) {
+		User user = repo.findByUsername(username);
+		user.setPassword(null);
+		return user;
+	}
+
+	@Override
+	public boolean isEmailExisted(String email) {
+		return repo.existsByEmail(email);
+	}
+
 }
