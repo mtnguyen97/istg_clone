@@ -3,6 +3,7 @@ package com.example.istg.commons;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,6 +33,7 @@ public class User implements Serializable {
 	@NotBlank(message = "invalid_username")
 	@Email(message = "invalid_username")
 	@Length(max = 256, message = "username_too_long")
+	@Column(unique = true)
 	private String username;
 	@Length(max = 60, message = "display_name_too_long")
 	private String displayName;
@@ -40,6 +42,7 @@ public class User implements Serializable {
 	@NotBlank(message = "invalid_email")
 	@Email(message = "invalid_email")
 	@Length(max = 256, message = "email_too_long")
+	@Column(unique = true)
 	private String email;
 	@NotBlank(message = "invalid_phone")
 	@Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$", message = "invalid_phone")
