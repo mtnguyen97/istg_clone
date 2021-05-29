@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.istg.commons.User;
+import com.example.istg.exceptions.DuplicatedUsernameOrEmailException;
 import com.example.istg.services.UserService;
 
 @RestController
@@ -73,8 +74,12 @@ public class UserController {
 
 	// create new user
 	@PostMapping("/create")
-	public User createUser(@RequestBody @Valid User user) {
-		return service.createUser(user);
+	public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
+		try {
+			return ResponseEntity.ok(service.createUser(user));
+		} catch (DuplicatedUsernameOrEmailException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 	}
 
 	

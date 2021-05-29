@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.istg.commons.User;
+import com.example.istg.exceptions.DuplicatedUsernameOrEmailException;
 import com.example.istg.repos.UserRepository;
 
 @Service
@@ -39,7 +40,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User createUser(User u) {
+	public User createUser(User u) throws DuplicatedUsernameOrEmailException {
+		if (repo.existsByEmail(u.getEmail()) || repo.existsByUsername(u.getUsername())) {
+			throw new DuplicatedUsernameOrEmailException();
+		}
 		u = repo.save(u);
 		return u;
 	}

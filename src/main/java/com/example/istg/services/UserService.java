@@ -3,6 +3,7 @@ package com.example.istg.services;
 import java.util.List;
 
 import com.example.istg.commons.User;
+import com.example.istg.exceptions.DuplicatedUsernameOrEmailException;
 
 public interface UserService {
 
@@ -12,7 +13,7 @@ public interface UserService {
 
 	User getUser(Long id);
 
-	User createUser(User u);
+	User createUser(User u) throws DuplicatedUsernameOrEmailException;
 
 	User updateUser(User u);
 
