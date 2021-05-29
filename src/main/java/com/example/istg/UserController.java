@@ -1,7 +1,11 @@
 package com.example.istg;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.istg.commons.User;
@@ -30,7 +38,7 @@ public class UserController {
 
 	// get all
 	@GetMapping("/all")
-	public List<User> getAllUser(Model model) {
+	public List<User> getAllUsers() {
 
 		return service.getAllUsers();
 	}
@@ -52,7 +60,6 @@ public class UserController {
 		return ResponseEntity.ok(user);
 	}
 
-
 	// get by id
 	@GetMapping("/id/{id}")
 	public ResponseEntity<User> getUser(@PathVariable Long id) {
@@ -66,14 +73,28 @@ public class UserController {
 
 	// create new user
 	@PostMapping("/create")
-	public User createUser(@RequestBody User user) {
+	public User createUser(@RequestBody @Valid User user) {
 		return service.createUser(user);
+	}
+
+	
+	// TODO handle invalid User
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+		Map<String, String> errors = new HashMap<>();
+		ex.getBindingResult().getAllErrors().forEach((error) -> {
+			String fieldName = ((FieldError) error).getField();
+			String errorMessage = error.getDefaultMessage();
+			errors.put(fieldName, errorMessage);
+		});
+		return errors;
 	}
 
 	// update user
 	@PutMapping("/update")
 	// Using the user id in request body instead of path variable
-	public ResponseEntity<User> updateUser(@RequestBody User userDetail) {
+	public ResponseEntity<User> updateUser(@RequestBody @Valid User userDetail) {
 		try {
 			User user = service.updateUser(userDetail);
 			return ResponseEntity.ok(user);

@@ -1,5 +1,6 @@
 package com.example.istg.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.istg.commons.Post;
+import com.example.istg.commons.User;
 import com.example.istg.repos.PostRepository;
 
 @Service
@@ -26,7 +28,11 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Post createPost(Post p) {
+	public Post createPost(Post p, User user) {
+		p.setPostedBy(user);
+		p.setCreatedAt(new Date());
+		p.setId(null);
+		p.setDeletedAt(null);
 		p = repo.save(p);
 		return p;
 	}
