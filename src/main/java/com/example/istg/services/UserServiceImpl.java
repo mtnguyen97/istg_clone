@@ -1,8 +1,8 @@
 package com.example.istg.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
 		if (repo.existsByEmail(u.getEmail()) || repo.existsByUsername(u.getUsername())) {
 			throw new DuplicatedUsernameOrEmailException();
 		}
+		u.setCreatedAt(new Date());
 		u = repo.save(u);
 		return u;
 	}
