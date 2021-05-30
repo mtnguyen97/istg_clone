@@ -44,6 +44,11 @@ public class UserController {
 		return service.getAllUsers();
 	}
 
+	@GetMapping("/login")
+	public ResponseEntity<Object> login() {
+		return ResponseEntity.ok().build();
+	}
+
 	@GetMapping("/current")
 	public ResponseEntity<User> getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -82,7 +87,6 @@ public class UserController {
 		}
 	}
 
-	
 	// TODO handle invalid User
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
