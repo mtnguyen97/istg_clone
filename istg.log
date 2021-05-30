@@ -186,3 +186,4 @@ java.lang.NullPointerException: Cannot invoke "com.example.istg.commons.User.set
 2021-05-30 15:31:57.887 DEBUG 11800 --- [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/api/user/login", parameters={}
 2021-05-30 15:31:57.888 DEBUG 11800 --- [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.istg.UserController#login()
 2021-05-30 15:31:57.889 DEBUG 11800 --- [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/octet-stream', given [*/*] and supported [*/*]
+2021-05-30 15:31:57.889 DEBUG 11800 --- [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK

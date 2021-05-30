@@ -45,7 +45,6 @@ public class User implements Serializable {
 	@Column(unique = true)
 	private String email;
 	@NotBlank(message = "invalid_phone")
-	@Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$", message = "invalid_phone")
 	private String phone;
 	private int gender;
 	@DateTimeFormat(iso = ISO.DATE_TIME)
