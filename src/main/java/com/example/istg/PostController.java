@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity.HeadersBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.FieldError;
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.istg.commons.Post;
 import com.example.istg.commons.User;
-import com.example.istg.dto.IdAndCreatedAt;
 import com.example.istg.dto.IdAndCreatedAtAndCreatedBy;
 import com.example.istg.services.PostService;
 import com.example.istg.services.UserService;
@@ -77,7 +75,7 @@ public class PostController {
 		IdAndCreatedAtAndCreatedBy response = new IdAndCreatedAtAndCreatedBy();
 		response.setId(post.getId());
 		response.setCreatedAt(post.getCreatedAt());
-		response.setCreatedBy(post.getPostedBy());
+		response.setCreatedBy(post.getPostedBy().getId());
 		return ResponseEntity.ok(response);
 	}
 

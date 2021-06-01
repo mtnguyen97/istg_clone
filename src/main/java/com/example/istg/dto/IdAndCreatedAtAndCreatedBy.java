@@ -1,17 +1,12 @@
 package com.example.istg.dto;
 
-import com.example.istg.commons.User;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class IdAndCreatedAtAndCreatedBy extends IdAndCreatedAt {
 
-	User createdBy;
-
-	public User getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
-	}
+	Long createdBy;
 
 }

@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService {
 	public Post createPost(Post p, User user) {
 		p.setPostedBy(user);
 		p.setCreatedAt(new Date());
-		if (p.getImages() == null || p.getImages().length == 0) {
+		if (p.getImages().isEmpty()) {
 			return null;
 		}
 		p.setId(null);
