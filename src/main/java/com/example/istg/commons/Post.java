@@ -38,7 +38,7 @@ public class Post implements Serializable {
 	private Date createdAt;
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date deletedAt;
-	@NotNull(message = "invalid_user") @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private User postedBy;
 	private boolean publicPost;
 
