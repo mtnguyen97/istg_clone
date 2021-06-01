@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +46,7 @@ public class PostController {
 
 	// get all
 	@GetMapping("/all")
-	public List<Post> getAllPost(Model model) {
+	public List<Post> getAllPost() {
 		return service.getAllPosts();
 	}
 
@@ -61,7 +63,7 @@ public class PostController {
 
 	// create new post
 	@PostMapping("/create")
-	public ResponseEntity<IdAndCreatedAt> createPost(@RequestBody Post post) {
+	public ResponseEntity<IdAndCreatedAt> createPost(@RequestBody @Valid Post post) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.getUserByUsername(authentication.getName());
 		if (user == null) {
@@ -76,7 +78,7 @@ public class PostController {
 
 	// update post
 	@PutMapping("/update")
-	public ResponseEntity<Post> updatePost(@RequestBody Post postDetail) {
+	public ResponseEntity<Post> updatePost(@RequestBody @Valid Post postDetail) {
 		try {
 			postDetail = service.updatePost(postDetail);
 			return ok(postDetail);
@@ -84,19 +86,19 @@ public class PostController {
 			return notFound().build();
 		}
 	}
-	
+
 	// TODO handle invalid Post
-		@ResponseStatus(HttpStatus.BAD_REQUEST)
-		@ExceptionHandler(MethodArgumentNotValidException.class)
-		public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-			Map<String, String> errors = new HashMap<>();
-			ex.getBindingResult().getAllErrors().forEach((error) -> {
-				String fieldName = ((FieldError) error).getField();
-				String errorMessage = error.getDefaultMessage();
-				errors.put(fieldName, errorMessage);
-			});
-			return errors;
-		}
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+		Map<String, String> errors = new HashMap<>();
+		ex.getBindingResult().getAllErrors().forEach((error) -> {
+			String fieldName = ((FieldError) error).getField();
+			String errorMessage = error.getDefaultMessage();
+			errors.put(fieldName, errorMessage);
+		});
+		return errors;
+	}
 
 	// delete post
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
