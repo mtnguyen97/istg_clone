@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.HeadersBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.FieldError;
@@ -63,13 +64,16 @@ public class PostController {
 
 	// create new post
 	@PostMapping("/create")
-	public ResponseEntity<IdAndCreatedAt> createPost(@RequestBody @Valid Post post) {
+	public ResponseEntity<Object> createPost(@RequestBody @Valid Post post) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.getUserByUsername(authentication.getName());
 		if (user == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		post = service.createPost(post, user);
+		if (post == null) {
+			return ResponseEntity.badRequest().build();
+		}
 		IdAndCreatedAtAndCreatedBy response = new IdAndCreatedAtAndCreatedBy();
 		response.setId(post.getId());
 		response.setCreatedAt(post.getCreatedAt());
