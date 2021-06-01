@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.istg.commons.Post;
 import com.example.istg.commons.User;
 import com.example.istg.dto.IdAndCreatedAt;
+import com.example.istg.dto.IdAndCreatedAtAndCreatedBy;
 import com.example.istg.services.PostService;
 import com.example.istg.services.UserService;
 
@@ -69,9 +70,10 @@ public class PostController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		post = service.createPost(post, user);
-		IdAndCreatedAt response = new IdAndCreatedAt();
+		IdAndCreatedAtAndCreatedBy response = new IdAndCreatedAtAndCreatedBy();
 		response.setId(post.getId());
 		response.setCreatedAt(post.getCreatedAt());
+		response.setCreatedBy(post.getPostedBy());
 		return ResponseEntity.ok(response);
 	}
 
