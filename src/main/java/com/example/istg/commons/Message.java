@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +30,10 @@ public class Message {
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private User receiver;
 	private String content;
+	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date createdAt;
-	private Date deliveredAt;
+	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date seenAt;
+	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date deletedAt;
 }
