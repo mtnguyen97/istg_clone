@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PostLoad;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -16,6 +17,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -55,7 +57,7 @@ public class User implements Serializable {
 	private String avatar;
 	private boolean privateUser;
 	@NotBlank
-	@Pattern(regexp = "^[a-fA-F0-9]{64}$", message = "invalid_password")
+	@Pattern(regexp = "^[a-fA-F0-9]{64}$", message = "invalid_password") @JsonIgnore
 	private String password;
 
 }

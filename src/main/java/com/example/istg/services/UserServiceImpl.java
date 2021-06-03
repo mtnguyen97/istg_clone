@@ -69,9 +69,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByUsername(String username) {
 		User user = repo.findByUsername(username);
-		if (user != null) {
-			user.setPassword(null);
-		}
 		return user;
 	}
 
