@@ -51,7 +51,7 @@ public class Post implements Serializable {
 	private Date createdAt;
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date deletedAt;
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private User postedBy;
 	private boolean publicPost;
 

@@ -9,7 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -29,6 +32,8 @@ public class Message {
 	private User sender;
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private User receiver;
+	@NotBlank(message = "blank_message")
+	@Length(min = 1, max = 4000, message = "invalid_message_length")
 	private String content;
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date createdAt;
@@ -36,4 +41,9 @@ public class Message {
 	private Date seenAt;
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date deletedAt;
+
+	@PrePersist
+	public void trimContent() {
+		content = content.trim();
+	}
 }

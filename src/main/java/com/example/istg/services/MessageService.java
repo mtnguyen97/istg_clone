@@ -3,6 +3,7 @@ package com.example.istg.services;
 import java.util.List;
 
 import com.example.istg.commons.Message;
+import com.example.istg.commons.User;
 
 public interface MessageService {
 
@@ -10,7 +11,7 @@ public interface MessageService {
 
 	Message getMessage(Long id);
 
-	Message createMessage(Message m);
+	Message createMessage(Message m, User sender, User receiver);
 
 	Message updateMessage(Message m);
 

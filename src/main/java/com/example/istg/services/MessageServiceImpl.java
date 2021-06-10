@@ -1,5 +1,6 @@
 package com.example.istg.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.istg.commons.Message;
+import com.example.istg.commons.User;
 import com.example.istg.repos.MessageRepository;
 
 @Service
@@ -26,7 +28,11 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public Message createMessage(Message m) {
+	public Message createMessage(Message m, User sender, User receiver) {
+		m.setId(null);
+		m.setSender(sender);
+		m.setReceiver(receiver);
+		m.setCreatedAt(new Date());
 		m = repo.save(m);
 		return m;
 	}

@@ -106,8 +106,13 @@ public class PostController {
 	// delete post
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Long> deletePost(@PathVariable Long id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.getUserByUsername(authentication.getName());
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 		try {
-			service.deletePost(id);
+			service.deletePost(id, user);
 			return ok(id);
 		} catch (NoSuchElementException e) {
 			return notFound().build();

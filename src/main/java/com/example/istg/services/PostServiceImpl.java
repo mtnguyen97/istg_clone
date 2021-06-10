@@ -50,9 +50,8 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void deletePost(Long id) {
-		if (repo.existsById(id)) {
-			repo.deleteById(id);
+	public void deletePost(Long id, User user) {
+		if (repo.deleteByIdAndPostedBy(id, user) > 0) {
 			return;
 		}
 		throw new NoSuchElementException();
