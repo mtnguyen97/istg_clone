@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.istg.commons.Post;
 import com.example.istg.commons.PostLiking;
 import com.example.istg.services.PostLikingService;
 
@@ -27,7 +28,15 @@ public class PostLikingController {
 	private PostLikingService service;
 
 	// get all
-	@GetMapping("/all")
+	@GetMapping("/all/post/{id}")
+	public List<PostLiking> getAllPostLinking(@PathVariable Long id) {
+		Post p = new Post();
+		p.setId(id);
+		return service.getAllPostLikings(p);
+	}
+
+	// get all
+	@GetMapping("/all/")
 	public List<PostLiking> getAllPostLinking() {
 		return service.getAllPostLikings();
 	}

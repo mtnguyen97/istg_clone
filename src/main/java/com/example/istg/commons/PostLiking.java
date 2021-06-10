@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.data.annotation.Reference;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,7 @@ public class PostLiking implements Serializable {
 	@ManyToOne(cascade = CascadeType.PERSIST, optional = false, fetch = FetchType.LAZY)
 	private User user;
 	@ManyToOne(cascade = CascadeType.PERSIST, optional = false, fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Post post;
 	private Date likingAt;
 	private Date unlikingAt;

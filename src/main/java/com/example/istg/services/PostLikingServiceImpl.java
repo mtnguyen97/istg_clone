@@ -3,14 +3,17 @@ package com.example.istg.services;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.istg.commons.Post;
 import com.example.istg.commons.PostLiking;
 import com.example.istg.repos.PostLikingRepository;
 
 @Service
 public class PostLikingServiceImpl implements PostLikingService {
 
+	@Autowired
 	private PostLikingRepository repo;
 
 	@Override
@@ -45,6 +48,11 @@ public class PostLikingServiceImpl implements PostLikingService {
 			return;
 		}
 		throw new NoSuchElementException();
+	}
+
+	@Override
+	public List<PostLiking> getAllPostLikings(Post post) {
+		return repo.findByPost(post);
 	}
 
 }
