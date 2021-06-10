@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.istg.commons.Comment;
+import com.example.istg.commons.Post;
+import com.example.istg.commons.PostLiking;
 import com.example.istg.services.CommentService;
 
 @RestController
@@ -31,6 +33,14 @@ public class CommentController {
 	@GetMapping("/all")
 	public List<Comment> getAllComment(Model model) {
 		return service.getAllComments();
+	}
+
+	// get all
+	@GetMapping("/all/post/{id}")
+	public List<Comment> getAllPostLinking(@PathVariable Long id) {
+		Post p = new Post();
+		p.setId(id);
+		return service.getAllComments(p);
 	}
 
 	// get by id

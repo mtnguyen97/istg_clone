@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.istg.commons.Comment;
+import com.example.istg.commons.Post;
 import com.example.istg.repos.CommentRepository;
 
 @Service
@@ -48,6 +49,11 @@ public class CommentServiceImpl implements CommentService {
 			return;
 		}
 		throw new NoSuchElementException();
+	}
+
+	@Override
+	public List<Comment> getAllComments(Post post) {
+		return repo.findByPost(post);
 	}
 
 }

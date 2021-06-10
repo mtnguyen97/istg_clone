@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ public class Comment implements Serializable {
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private User commentedBy;
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Post post;
 	private Date createdAt;
 	private Date deletedAt;
