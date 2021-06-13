@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.istg.commons.Post;
 import com.example.istg.commons.PostLiking;
+import com.example.istg.commons.User;
 
 public interface PostLikingService {
 
@@ -13,7 +14,7 @@ public interface PostLikingService {
 
 	PostLiking getPostLiking(Long id);
 
-	PostLiking createPostLiking(PostLiking postLiking);
+	PostLiking createPostLiking(User user, Long postId);
 
 	PostLiking updatePostLiking(PostLiking postLiking);
 

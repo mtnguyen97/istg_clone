@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,13 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.istg.commons.Post;
 import com.example.istg.commons.PostLiking;
+import com.example.istg.commons.User;
+import com.example.istg.dto.IdAndCreatedAt;
 import com.example.istg.services.PostLikingService;
+import com.example.istg.services.UserService;
 
 @RestController
 @RequestMapping("/api/postliking")
 public class PostLikingController {
 	@Autowired
 	private PostLikingService service;
+	@Autowired
+	private UserService userService;
 
 	// get all
 	@GetMapping("/all/post/{id}")
@@ -53,9 +61,23 @@ public class PostLikingController {
 	}
 
 	// create new post
-	@PostMapping("/create")
-	public PostLiking createPostLinking(@RequestBody PostLiking post) {
-		return service.createPostLiking(post);
+	@PostMapping("/create/{postId}")
+	public ResponseEntity<IdAndCreatedAt> createPostLinking(@PathVariable Long postId) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.getUserByUsername(authentication.getName());
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		try {
+			PostLiking postLiking = service.createPostLiking(user, postId);
+			IdAndCreatedAt r = new IdAndCreatedAt();
+			r.setId(postLiking.getId());
+			r.setCreatedAt(postLiking.getLikingAt());
+			return ok(r);
+		} catch (NoSuchElementException e) {
+			return notFound().build();
+		}
+
 	}
 
 	// update post

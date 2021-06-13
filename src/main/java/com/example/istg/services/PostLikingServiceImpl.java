@@ -1,5 +1,6 @@
 package com.example.istg.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -8,13 +9,16 @@ import org.springframework.stereotype.Service;
 
 import com.example.istg.commons.Post;
 import com.example.istg.commons.PostLiking;
+import com.example.istg.commons.User;
 import com.example.istg.repos.PostLikingRepository;
+import com.example.istg.repos.PostRepository;
 
 @Service
 public class PostLikingServiceImpl implements PostLikingService {
 
 	@Autowired
 	private PostLikingRepository repo;
+	private PostRepository postRepo;
 
 	@Override
 	public List<PostLiking> getAllPostLikings() {
@@ -27,9 +31,17 @@ public class PostLikingServiceImpl implements PostLikingService {
 	}
 
 	@Override
-	public PostLiking createPostLiking(PostLiking postLiking) {
-		postLiking = repo.save(postLiking);
-		return postLiking;
+	public PostLiking createPostLiking(User user, Long postId) {
+		Post post = postRepo.findById(postId).get();
+		PostLiking postLiking = repo.findByUserAndPost(user, post);
+		if (postLiking != null) {
+			return postLiking;
+		}
+		postLiking = new PostLiking();
+		postLiking.setPost(post);
+		postLiking.setLikingAt(new Date());
+		postLiking.setUser(user);
+		return repo.save(postLiking);
 	}
 
 	@Override

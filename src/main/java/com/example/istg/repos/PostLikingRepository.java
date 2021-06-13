@@ -7,9 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.example.istg.commons.Post;
 import com.example.istg.commons.PostLiking;
+import com.example.istg.commons.User;
 
 @Repository
 public interface PostLikingRepository extends JpaRepository<PostLiking, Long> {
 
 	List<PostLiking> findByPost(Post post);
+
+	PostLiking findByUserAndPost(User user, Post post);
 }
