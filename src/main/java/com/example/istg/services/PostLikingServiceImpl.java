@@ -55,8 +55,8 @@ public class PostLikingServiceImpl implements PostLikingService {
 	}
 
 	@Override
-	public void deletePostLiking(Long id) {
-		if (repo.existsById(id)) {
+	public void deletePostLiking(Long id, User user) {
+		if (repo.existsByIdAndUser(id, user)) {
 			repo.deleteById(id);
 			return;
 		}

@@ -18,6 +18,6 @@ public interface PostLikingService {
 
 	PostLiking updatePostLiking(PostLiking postLiking);
 
-	void deletePostLiking(Long id);
+	void deletePostLiking(Long id, User user);
 
 }

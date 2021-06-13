@@ -15,4 +15,6 @@ public interface PostLikingRepository extends JpaRepository<PostLiking, Long> {
 	List<PostLiking> findByPost(Post post);
 
 	PostLiking findByUserAndPost(User user, Post post);
+
+	boolean existsByIdAndUser(Long id, User user);
 }

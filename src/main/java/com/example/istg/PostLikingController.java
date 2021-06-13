@@ -92,10 +92,15 @@ public class PostLikingController {
 	}
 
 	// delete post
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	@PostMapping("/delete/{id}")
 	public ResponseEntity<Long> deletePostLinking(@PathVariable Long id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.getUserByUsername(authentication.getName());
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 		try {
-			service.deletePostLiking(id);
+			service.deletePostLiking(id, user);
 			return ok(id);
 		} catch (NoSuchElementException e) {
 			return notFound().build();
