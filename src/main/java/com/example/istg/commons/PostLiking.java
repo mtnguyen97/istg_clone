@@ -28,7 +28,7 @@ import lombok.Setter;
 public class PostLiking implements Serializable {
 
 	private @Id @GeneratedValue(strategy = GenerationType.AUTO) Long id;
-	@ManyToOne(cascade = CascadeType.PERSIST, optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.PERSIST, optional = false)
 	private User user;
 	@ManyToOne(cascade = CascadeType.PERSIST, optional = false, fetch = FetchType.LAZY)
 	@JsonIgnore
