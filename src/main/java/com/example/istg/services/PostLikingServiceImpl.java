@@ -18,6 +18,7 @@ public class PostLikingServiceImpl implements PostLikingService {
 
 	@Autowired
 	private PostLikingRepository repo;
+	@Autowired
 	private PostRepository postRepo;
 
 	@Override
