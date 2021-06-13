@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.istg.commons.Comment;
 import com.example.istg.commons.Post;
+import com.example.istg.commons.User;
 
 public interface CommentService {
 
@@ -13,7 +14,7 @@ public interface CommentService {
 
 	Comment getComment(Long id);
 
-	Comment createComment(Comment comment);
+	Comment createComment(Comment comment, User user, Long postId);
 
 	Comment updateComment(Comment comment);
 
