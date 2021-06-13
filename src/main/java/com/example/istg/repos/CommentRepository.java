@@ -7,8 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import com.example.istg.commons.Comment;
 import com.example.istg.commons.Post;
+import com.example.istg.commons.User;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 	List<Comment> findByPost(Post post);
+
+	boolean existsByIdAndCommentedBy(Long id, User commentedBy);
 }

@@ -54,8 +54,8 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void deleteComment(Long id) {
-		if (repo.existsById(id)) {
+	public void deleteComment(Long id, User user) {
+		if (repo.existsByIdAndCommentedBy(id, user)) {
 			repo.deleteById(id);
 			return;
 		}

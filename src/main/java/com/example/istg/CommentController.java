@@ -102,10 +102,15 @@ public class CommentController {
 	}
 
 	// delete cmt
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	@PostMapping("/delete/{id}")
 	public ResponseEntity<Long> deleteComment(@PathVariable Long id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.getUserByUsername(authentication.getName());
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 		try {
-			service.deleteComment(id);
+			service.deleteComment(id, user);
 			return ok(id);
 		} catch (NoSuchElementException e) {
 			return notFound().build();
