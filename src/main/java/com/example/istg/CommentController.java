@@ -70,7 +70,7 @@ public class CommentController {
 	}
 
 	// create new cmt
-	@PostMapping("/comment/create/{postId}")
+	@PostMapping("/create/{postId}")
 	public ResponseEntity<IdAndCreatedAt> createComment(@RequestBody @Valid Comment comment,
 			@PathVariable Long postId) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
