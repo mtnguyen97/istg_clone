@@ -39,6 +39,8 @@ public class Comment implements Serializable {
 	private Date createdAt;
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private Date deletedAt;
+	@DateTimeFormat(iso = ISO.DATE_TIME)
+	private Date updatedAt;
 	@NotBlank
 	@Size(max = 1024)
 	private String content;

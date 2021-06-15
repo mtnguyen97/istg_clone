@@ -45,12 +45,15 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Comment updateComment(Comment comment) {
-		if (repo.existsById(comment.getId())) {
-			comment = repo.save(comment);
-			return comment;
+	public Comment updateComment(Long id, Comment comment, User user) {
+		Comment oldComment = repo.findById(id).orElse(null);
+		if (oldComment == null || !oldComment.getCommentedBy().getId().equals(user.getId())) {
+			return null;
 		}
-		throw new NoSuchElementException();
+		oldComment.setContent(comment.getContent());
+		oldComment.setUpdatedAt(new Date());
+		oldComment = repo.save(oldComment);
+		return oldComment;
 	}
 
 	@Override

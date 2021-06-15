@@ -10,10 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class IdAndCreatedAt {
-
-	Long id;
+public class IdAndCreatedAtAndUpdatedAt extends IdAndCreatedAt {
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	Date createdAt;
-
+	Date updatedAt;
 }

@@ -16,7 +16,7 @@ public interface CommentService {
 
 	Comment createComment(Comment comment, User user, Long postId);
 
-	Comment updateComment(Comment comment);
+	Comment updateComment(Long id, Comment comment, User user);
 
 	void deleteComment(Long id, User user);
 

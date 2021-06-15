@@ -22,10 +22,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +31,7 @@ import com.example.istg.commons.Comment;
 import com.example.istg.commons.Post;
 import com.example.istg.commons.User;
 import com.example.istg.dto.IdAndCreatedAt;
+import com.example.istg.dto.IdAndCreatedAtAndUpdatedAt;
 import com.example.istg.services.CommentService;
 import com.example.istg.services.UserService;
 
@@ -90,15 +89,23 @@ public class CommentController {
 	}
 
 	// update cmt
-	@PutMapping("/update")
-	public ResponseEntity<Comment> updateComment(@RequestBody Comment commentDetail) {
-		try {
-			commentDetail = service.updateComment(commentDetail);
-			return ok(commentDetail);
-		} catch (NoSuchElementException e) {
+	@PostMapping("/update/{id}")
+	public ResponseEntity<IdAndCreatedAtAndUpdatedAt> updateComment(@RequestBody @Valid Comment comment,
+			@PathVariable Long id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.getUserByUsername(authentication.getName());
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		comment = service.updateComment(id, comment, user);
+		if (comment == null) {
 			return notFound().build();
 		}
-
+		IdAndCreatedAtAndUpdatedAt r = new IdAndCreatedAtAndUpdatedAt();
+		r.setId(comment.getId());
+		r.setCreatedAt(comment.getCreatedAt());
+		r.setUpdatedAt(comment.getUpdatedAt());
+		return ok(r);
 	}
 
 	// delete cmt
@@ -117,7 +124,7 @@ public class CommentController {
 		}
 
 	}
-	
+
 	// TODO handle invalid comment
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
