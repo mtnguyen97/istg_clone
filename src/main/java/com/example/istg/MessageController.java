@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.istg.commons.ChatCred;
 import com.example.istg.commons.Message;
 import com.example.istg.commons.User;
 import com.example.istg.dto.IdAndCreatedAt;
@@ -106,7 +107,7 @@ public class MessageController {
 			return notFound().build();
 		}
 	}
-	
+
 	// TODO handle invalid Message
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -119,4 +120,18 @@ public class MessageController {
 		});
 		return errors;
 	}
+
+	@GetMapping("/cred")
+	public ResponseEntity<ChatCred> getChadCred() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.getUserByUsername(authentication.getName());
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		if (user.getChatCred() != null) {
+			return ok(user.getChatCred());
+		}
+		return notFound().build();
+	}
+	
 }

@@ -16,5 +16,4 @@ public interface MessageService {
 	Message updateMessage(Message m);
 
 	void deleteMessage(Long id);
-
 }

@@ -3,11 +3,13 @@ package com.example.istg.commons;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.PostLoad;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -57,7 +59,11 @@ public class User implements Serializable {
 	private String avatar;
 	private boolean privateUser;
 	@NotBlank
-	@Pattern(regexp = "^[a-fA-F0-9]{64}$", message = "invalid_password") @JsonIgnore
+	@Pattern(regexp = "^[a-fA-F0-9]{64}$", message = "invalid_password")
+	@JsonIgnore
 	private String password;
+	@JsonIgnore
+	@OneToOne(cascade = CascadeType.REMOVE)
+	private ChatCred chatCred;
 
 }
