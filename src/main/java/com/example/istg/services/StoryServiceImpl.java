@@ -20,7 +20,7 @@ public class StoryServiceImpl implements StoryService {
 
 	@Override
 	public Story getStory(Long id) {
-		return repo.findById(id).orElseThrow();
+		return repo.findById(id).get();
 	}
 
 	@Override

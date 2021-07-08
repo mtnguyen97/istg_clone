@@ -22,7 +22,7 @@ public class UserBlockingServiceImpl implements UserBlockingService {
 
 	@Override
 	public UserBlocking getUserBlocking(Long id) {
-		return repo.findById(id).orElseThrow();
+		return repo.findById(id).get();
 	}
 
 	@Override

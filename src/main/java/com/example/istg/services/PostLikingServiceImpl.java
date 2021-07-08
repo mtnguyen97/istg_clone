@@ -28,7 +28,7 @@ public class PostLikingServiceImpl implements PostLikingService {
 
 	@Override
 	public PostLiking getPostLiking(Long id) {
-		return repo.findById(id).orElseThrow();
+		return repo.findById(id).get();
 	}
 
 	@Override

@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUser(Long id) {
-		User u = repo.findById(id).orElseThrow();
+		User u = repo.findById(id).get();
 		// TODO hide user password
 		u.setPassword("");
 		return u;

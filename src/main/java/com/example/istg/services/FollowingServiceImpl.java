@@ -22,7 +22,7 @@ public class FollowingServiceImpl implements FollowingService {
 
 	@Override
 	public Following getFollowing(Long id) {
-		Following f = repo.findById(id).orElseThrow();
+		Following f = repo.findById(id).get();
 		return f;
 	}
 

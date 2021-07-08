@@ -22,7 +22,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 
 	@Override
 	public FriendRequesting getFriendRequesting(Long id) {
-		return repo.findById(id).orElseThrow();
+		return repo.findById(id).get();
 	}
 
 	@Override
