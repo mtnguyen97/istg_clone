@@ -46,7 +46,7 @@ public class PostController {
 
 	// get all
 	@GetMapping("/all")
-	public List<Post> getAllPost() {
+	public Iterable<Post> getAllPost() {
 		return service.getAllPosts();
 	}
 

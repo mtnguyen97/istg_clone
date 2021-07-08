@@ -7,7 +7,7 @@ import com.example.istg.commons.User;
 
 public interface PostService {
 
-	List<Post> getAllPosts();
+	Iterable<Post> getAllPosts();
 
 	Post getPost(Long id);
 

@@ -55,30 +55,4 @@ public class Post implements Serializable {
 	private User postedBy;
 	private boolean publicPost;
 
-	public static final String IMG_DIR = "files";
-
-	@PrePersist
-	public void saveImages() {
-		List<String> files = new ArrayList<>();
-		for (String img : getImages()) {
-			String fileName = UUID.randomUUID().toString();
-			try {
-				Files.createFile(Paths.get(IMG_DIR, fileName));
-				Files.write(Paths.get(IMG_DIR, fileName), Base64.getDecoder().decode(img));
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-			files.add(fileName);
-		}
-		setImages(files);
-		;
-	}
-
-	@PreRemove
-	public void deleteImages() throws IOException {
-		for (String fileName : images) {
-			Files.deleteIfExists(Paths.get(IMG_DIR, fileName));
-		}
-	}
-
 }
