@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "chatcreds")
 @Getter
 @Setter
 public class ChatCred implements Serializable {
