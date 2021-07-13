@@ -15,6 +15,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -57,7 +59,7 @@ public class User implements Serializable {
 	private boolean privateUser;
 	@NotBlank
 	@Pattern(regexp = "^[a-fA-F0-9]{64}$", message = "invalid_password")
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.REMOVE)
