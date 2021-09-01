@@ -5,14 +5,12 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity(name = "chatcreds")
 @Getter
 @Setter
+@ToString
 public class ChatCred implements Serializable {
 
 	private @Id Long id;

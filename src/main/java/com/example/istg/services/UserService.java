@@ -1,9 +1,13 @@
 package com.example.istg.services;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import com.example.istg.commons.ChatCred;
 import com.example.istg.commons.User;
 import com.example.istg.exceptions.DuplicatedUsernameOrEmailException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface UserService {
 
@@ -22,5 +26,7 @@ public interface UserService {
 	User getUserByUsername(String username);
 
 	boolean isEmailExisted(String email);
+
+	ChatCred createChatCred(User user) throws IOException;
 
 }

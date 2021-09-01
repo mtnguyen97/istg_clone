@@ -1,5 +1,7 @@
 package com.example.istg;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +9,8 @@ import java.util.NoSuchElementException;
 
 import javax.validation.Valid;
 
+import com.example.istg.commons.ChatCred;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +60,7 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		String name = authentication.getName();
-		if (name == "anonymousUser") {
+		if ("anonymousUser".equals(name)) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		User user = service.getUserByUsername(name);
@@ -85,6 +89,27 @@ public class UserController {
 		} catch (DuplicatedUsernameOrEmailException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
+	}
+
+	@GetMapping("/rcc")
+	public ResponseEntity<ChatCred> requestChatCred() throws IOException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		String name = authentication.getName();
+		if ("anonymousUser".equals(name)) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		User user = service.getUserByUsername(name);
+		if (user == null) {
+			return ResponseEntity.notFound().build();
+		}
+		ChatCred chatCred = user.getChatCred();
+		if (chatCred == null) {
+			chatCred = service.createChatCred(user);
+		}
+		return ResponseEntity.ok(chatCred);
 	}
 
 	// TODO handle invalid User
