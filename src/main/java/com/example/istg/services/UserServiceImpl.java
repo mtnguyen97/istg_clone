@@ -105,7 +105,8 @@ public class UserServiceImpl implements UserService {
         httpPost.setHeader("Content-type", "application/json");
         Map<String, String> payload = new HashMap<>();
         payload.put("username", user.getUsername());
-        payload.put("secret", Utils.randomString(24));
+        final String secret = Utils.randomString(24);
+        payload.put("secret", secret);
         httpPost.setEntity(new StringEntity(new ObjectMapper().writeValueAsString(payload)));
         CloseableHttpResponse response = httpClient.execute(httpPost);
         HttpEntity entity = response.getEntity();
@@ -115,6 +116,7 @@ public class UserServiceImpl implements UserService {
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             ChatCred chatCred = mapper.readValue(stream, ChatCred.class);
             if (chatCred != null && chatCred.getId() != null) {
+                chatCred.setSecret(secret);
                 user.setChatCred(chatCred);
                 user = repo.save(user);
                 return user.getChatCred();
