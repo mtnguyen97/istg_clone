@@ -17,7 +17,7 @@ public interface UserService {
 
 	User getUser(Long id);
 
-	User createUser(User u) throws DuplicatedUsernameOrEmailException;
+	User createUser(User u) throws DuplicatedUsernameOrEmailException, IOException;
 
 	User updateUser(User u);
 

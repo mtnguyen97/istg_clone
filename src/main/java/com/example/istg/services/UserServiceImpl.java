@@ -61,12 +61,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User u) throws DuplicatedUsernameOrEmailException {
+    public User createUser(User u) throws DuplicatedUsernameOrEmailException, IOException {
         if (repo.existsByEmail(u.getEmail()) || repo.existsByUsername(u.getUsername())) {
             throw new DuplicatedUsernameOrEmailException();
         }
         u.setCreatedAt(new Date());
         u = repo.save(u);
+        createChatCred(u);
         return u;
     }
 

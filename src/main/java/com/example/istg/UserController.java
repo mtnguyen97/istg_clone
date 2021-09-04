@@ -83,7 +83,7 @@ public class UserController {
 
 	// create new user
 	@PostMapping("/create")
-	public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
+	public ResponseEntity<User> createUser(@RequestBody @Valid User user) throws IOException {
 		try {
 			return ResponseEntity.ok(service.createUser(user));
 		} catch (DuplicatedUsernameOrEmailException e) {
