@@ -22,6 +22,12 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private CloudinaryService cloudinaryService;
 
+    @Autowired
+    private PostLikingService postLikingService;
+
+    @Autowired
+    private CommentService commentService;
+
     @Override
     public Iterable<Post> getAllPosts() {
         return repo.findAll();
@@ -66,6 +72,8 @@ public class PostServiceImpl implements PostService {
                     e.printStackTrace();
                 }
             });
+            postLikingService.deleteAll(postLikingService.getAllPostLikings(post));
+            commentService.deleteAll(commentService.getAllComments(post));
             repo.delete(post);
         }
         throw new NoSuchElementException();

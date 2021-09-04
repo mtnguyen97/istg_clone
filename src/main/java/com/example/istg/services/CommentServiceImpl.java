@@ -66,6 +66,11 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
+	public void deleteAll(Iterable<Comment> comments) {
+		repo.deleteAll(comments);
+	}
+
+	@Override
 	public List<Comment> getAllComments(Post post) {
 		return repo.findByPost(post);
 	}

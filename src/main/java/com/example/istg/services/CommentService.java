@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.istg.commons.Comment;
 import com.example.istg.commons.Post;
+import com.example.istg.commons.PostLiking;
 import com.example.istg.commons.User;
 
 public interface CommentService {
@@ -19,5 +20,7 @@ public interface CommentService {
 	Comment updateComment(Long id, Comment comment, User user);
 
 	void deleteComment(Long id, User user);
+
+	void deleteAll(Iterable<Comment> comments);
 
 }

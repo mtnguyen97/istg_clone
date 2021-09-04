@@ -63,6 +63,10 @@ public class PostLikingServiceImpl implements PostLikingService {
 		throw new NoSuchElementException();
 	}
 
+	public void deleteAll(Iterable<PostLiking> likings) {
+		repo.deleteAll(likings);
+	}
+
 	@Override
 	public List<PostLiking> getAllPostLikings(Post post) {
 		return repo.findByPost(post);

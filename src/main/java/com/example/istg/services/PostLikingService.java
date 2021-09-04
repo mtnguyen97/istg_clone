@@ -20,4 +20,6 @@ public interface PostLikingService {
 
 	void deletePostLiking(Long id, User user);
 
+	void deleteAll(Iterable<PostLiking> likings);
+
 }
