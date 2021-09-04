@@ -75,6 +75,7 @@ public class PostServiceImpl implements PostService {
             postLikingService.deleteAll(postLikingService.getAllPostLikings(post));
             commentService.deleteAll(commentService.getAllComments(post));
             repo.delete(post);
+            return;
         }
         throw new NoSuchElementException();
     }
