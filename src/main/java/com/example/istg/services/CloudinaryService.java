@@ -34,7 +34,7 @@ public class CloudinaryService {
         if (id == null) {
             return null;
         }
-        return cloudinary.url().publicId(id).generate();
+        return cloudinary.url().publicId(id).secure(true).generate();
     }
 
     public void destroy(String id) throws IOException {
